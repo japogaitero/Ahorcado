@@ -13,9 +13,27 @@ import java.util.Scanner;
  * @author Victor
  */
 public class Ahorcado {
-    /*public static boolean otraPartida(juego){
-             boolean jugar=true;   
-        
+    public static boolean otraPartida(String juego){
+        Scanner teclado = new Scanner(System.in);
+        boolean jugar=true;
+        boolean preguntaCorrecta=true;                
+        preguntaCorrecta=true;
+        while(preguntaCorrecta) {            
+            switch (juego)
+            {
+                case "SI":
+                    preguntaCorrecta=false;
+                    break;
+                case "NO":
+                    preguntaCorrecta=false;
+                    jugar=false;
+                    break;
+                default:
+                    System.out.println("¿DESEA JUGAR OTRA PARTIDA?");
+                    System.out.println("LIMITESE A CONTESTAR \"SI\" O \"NO\"" );
+                    juego =teclado.next().toUpperCase();
+            }
+        }        
         return jugar;
     }
     
@@ -31,25 +49,8 @@ public class Ahorcado {
         while (jugar){
             System.out.println("¿DESEA JUGAR OTRA PARTIDA?");
             juego =teclado.next().toUpperCase();
-            preguntaCorrecta=true;
-            while(preguntaCorrecta) {
-                //preguntaCorrecta=otraPartida(juego);
-                switch (juego)
-                {
-                    case "SI":                        
-                        preguntaCorrecta=false;
-                        break;
-                    case "NO":
-                        preguntaCorrecta=false;
-                        jugar=false;
-                        break; 
-                    default:
-                        System.out.println("¿DESEA JUGAR OTRA PARTIDA?");
-                        System.out.println("LIMITESE A CONTESTAR \"SI\" O \"NO\"" );
-                        juego =teclado.next();
-                }            
+            jugar=otraPartida(juego);//METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA VEZ
         }
-        System.out.println("ESTAMOS FUERA");
-    }
+        System.out.println("SI YA NO QUIERES JUGAR MAS PUES S'ACABO LO QUE SE DABA");
     }
 }
