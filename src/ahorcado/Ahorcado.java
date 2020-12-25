@@ -9,12 +9,220 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.Arrays;
 
 /**
  *
  * @author Victor
  */
 public class Ahorcado {
+    
+    public static String selectorNivel(){
+        String nivel;        
+        Scanner teclado = new Scanner(System.in);
+        nivel =teclado.next().toUpperCase();
+        boolean nivelCorrecto=true;
+        while(nivelCorrecto) {
+            switch (nivel){
+                case "FACIL":
+                    nivelCorrecto=false;
+                    System.out.println("HAS SELECCIONADO NIVEL "+nivel);
+                    break;
+                case "MEDIO":
+                    nivelCorrecto=false;
+                    System.out.println("HAS SELECCIONADO NIVEL "+nivel);
+                    break;
+                case "DIFICIL":
+                    nivelCorrecto=false;
+                    System.out.println("HAS SELECCIONADO NIVEL "+nivel);
+                    break;
+                case "INSTRUCCIONES":
+                    nivelCorrecto=false;
+                    break;
+                default:
+                    System.out.println("LIMITESE A ESCRIBIR \"FACIL\" O \"MEDIO\" O \"DIFICIL\" O \"INSTRUCCIONES\"" );
+                    nivel =teclado.next().toUpperCase();
+            }
+        }
+        return nivel;
+    }
+    public static String selectorPalabra(String nivel)throws FileNotFoundException {
+        File archivoFacil = new File ("src/ahorcado/facil.txt");
+        File archivoMedio = new File ("src/ahorcado/medio.txt");
+        File archivoDificil = new File ("src/ahorcado/dificil.txt");
+        File archivoInstrucciones = new File ("src/ahorcado/instrucciones.txt");
+        Scanner entradaFacil = new Scanner (archivoFacil);
+        Scanner entradaMedio = new Scanner (archivoMedio);
+        Scanner entradaDificil = new Scanner (archivoDificil);
+        Scanner entradaInstrucciones = new Scanner (archivoInstrucciones);
+        Random aleatorio = new Random();
+        String palabras="";
+        String palabra;
+        String Instrucciones;
+        switch (nivel){
+            case "FACIL":
+                palabras=entradaFacil.nextLine().toUpperCase();
+                entradaFacil.close();
+                break;
+            case "MEDIO":
+                palabras=entradaMedio.nextLine().toUpperCase();
+                entradaMedio.close();
+                break;
+            case "DIFICIL":
+                palabras=entradaDificil.nextLine().toUpperCase();
+                entradaDificil.close();
+                break;
+            case "INSTRUCCIONES":                
+                Instrucciones=entradaInstrucciones.nextLine().toUpperCase();
+                entradaInstrucciones.close();
+                break;
+        }
+        String[] arrayPalabras =palabras.split(",");
+        for (int i=0; i<arrayPalabras.length;i++){
+            palabra= arrayPalabras[i];
+            //System.out.println(palabra);
+        }
+        palabra= arrayPalabras[aleatorio.nextInt(arrayPalabras.length)];
+        
+        return palabra;
+    }
+    public static void pintarMonigote(int errores){        
+        switch (errores){
+            case 0:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "  ____||____");
+                break;
+            case 1:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                           _|_                 \n" +
+                        "      ||                         _(___)_               \n" +
+                        "      ||                         | - + |               \n" +
+                        "      ||                         |  <  |               \n" +
+                        "      ||                          \\_O_/               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "  ____||____");
+                break;
+            case 2:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                           _|_                 \n" +
+                        "      ||                         _(___)_               \n" +
+                        "      ||                         | - + |               \n" +
+                        "      ||                         |  <  |               \n" +
+                        "      ||                          \\_O_/               \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "  ____||____");
+                break;
+            case 3:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                           _|_                 \n" +
+                        "      ||                         _(___)_               \n" +
+                        "      ||                         | - + |               \n" +
+                        "      ||                         |  <  |               \n" +
+                        "      ||                          \\_O_/               \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                          ||||||               \n" +
+                        "      ||                        ||  ||                 \n" +
+                        "      ||                       ||   ||                 \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "  ____||____");
+                break;
+            case 4:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                           _|_                 \n" +
+                        "      ||                         _(___)_               \n" +
+                        "      ||                         | - + |               \n" +
+                        "      ||                         |  <  |               \n" +
+                        "      ||                          \\_O_/               \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                          ||||||               \n" +
+                        "      ||                        ||  ||  ||             \n" +
+                        "      ||                       ||   ||    ||           \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "      ||                                               \n" +
+                        "  ____||____");
+                break;
+            case 5:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                           _|_                 \n" +
+                        "      ||                         _(___)_               \n" +
+                        "      ||                         | - + |               \n" +
+                        "      ||                         |  <  |               \n" +
+                        "      ||                          \\_O_/               \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                          ||||||               \n" +
+                        "      ||                        ||  ||  ||             \n" +
+                        "      ||                       ||   ||    ||           \n" +
+                        "      ||                          ||                   \n" +
+                        "      ||                         ||                    \n" +
+                        "      ||                        ||                     \n" +
+                        "      ||                       ---                     \n" +
+                        "  ____||____");
+                break;
+                
+            default:
+                System.out.println("      ______________________________        \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                            |                  \n" +
+                        "      ||                           _|_                 \n" +
+                        "      ||                         _(___)_               \n" +
+                        "      ||      MUERTO!!!          | - + |               \n" +
+                        "      ||                         |  <  |               \n" +
+                        "      ||                          \\_O_/               \n" +
+                        "      ||                            ||                 \n" +
+                        "      ||                          ||||||               \n" +
+                        "      ||                        ||  ||  ||             \n" +
+                        "      ||                       ||   ||    ||           \n" +
+                        "      ||                          ||  ||               \n" +
+                        "      ||                         ||    ||              \n" +
+                        "      ||                        ||      ||             \n" +
+                        "      ||                       ---      ---            \n" +
+                        "  ____||____");
+        }
+    }
     public static boolean otraPartida(String juego){
         Scanner teclado = new Scanner(System.in);
         boolean jugar=true;
@@ -35,87 +243,69 @@ public class Ahorcado {
             }
         }
         return jugar;
-    }
-    public static String selectorNivel(String nivel){
-        Scanner teclado = new Scanner(System.in);
-        boolean nivelCorrecto=true;
-        while(nivelCorrecto) {
-            switch (nivel){
-                case "FACIL":
-                    nivelCorrecto=false;
-                    break;
-                case "MEDIO":
-                    nivelCorrecto=false;
-                    break;
-                case "DIFICIL":
-                    nivelCorrecto=false;
-                    break;
-                default:
-                    System.out.println("LIMITESE A ESCRIBIR \"FACIL\" O \"MEDIO\" O \"DIFICIL\"" );
-                    nivel =teclado.next().toUpperCase();
-            }
-        }
-        return nivel;
-    }
-    public static String selectorPalabra(String nivel)throws FileNotFoundException {
-        File archivoFacil = new File ("src/ahorcado/facil.txt");
-        File archivoMedio = new File ("src/ahorcado/medio.txt");
-        File archivoDificil = new File ("src/ahorcado/dificil.txt");
-        Scanner entradaFacil = new Scanner (archivoFacil);
-        Scanner entradaMedio = new Scanner (archivoFacil);
-        Scanner entradaDificil = new Scanner (archivoFacil);
-        Random aleatorio = new Random();        
-        String palabras="";
-        String palabra;        
-        switch (nivel){
-            case "FACIL":                
-                palabras=entradaFacil.nextLine();
-                //String[] palabras= palabras.split(",");
-                break;
-            case "MEDIO":
-                palabras=entradaMedio.nextLine();                
-                break;
-            case "DIFICIL": 
-                palabras=entradaDificil.nextLine();
-                break;            
-        }
-        String[] arrayPalabras =palabras.split(",");
-        for (int i=0; i<arrayPalabras.length;i++){
-            palabra= arrayPalabras[i];
-            System.out.println(palabra);        
-        }        
-        palabra= arrayPalabras[aleatorio.nextInt(arrayPalabras.length)];
-        
-        return palabra;
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
+    }    
     public static void main(String[] args)throws FileNotFoundException {
         Scanner teclado = new Scanner(System.in);
         //Scanner entrada = new Scanner ("src/ahorcado/facil.txt");
         String nivel;
         String juego;
         String palabra;
+        char letra;
         boolean jugar=true;
         while (jugar){
             /*-------------------------------------------------------------------
             *    METODO PARA SELECCIONAR NIVEL
             --------------------------------------------------------------------*/
-            System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR");
-            System.out.println("FACIL - - - MEDIO - - - DIFICIL");
-            nivel =teclado.next().toUpperCase();
-            nivel=selectorNivel(nivel);
-            System.out.println("VAS A JUGAR EN NIVEL "+nivel);
+            System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR O ESCRIBA INSTRUCCIONES PARA SABER COMO JUGAR");
+            System.out.println("FACIL - - - MEDIO - - - DIFICIL - - - INTRUCCIONES");            
+            nivel=selectorNivel();            
             /*-------------------------------------------------------------------
             *    METODO PARA SELECCIONAR PALABRA SEGUN EL NIVEL
-            --------------------------------------------------------------------*/            
-            palabra=selectorPalabra(nivel);            
-            System.out.println("la palabra para jugar es "+ palabra); 
+            --------------------------------------------------------------------*/
+            palabra=selectorPalabra(nivel);
+            System.out.println("la palabra para jugar es "+ palabra);
+            char [] letras=palabra.toCharArray();// CONVIERTO LA PALABRA EN UN ARRAY DE LETRAS (char)
+            char [] guiones= new char[letras.length];// CREO UN ARRAY DE MISMA LONGITUD QUE LAS LETRAS PERO SUSTITUYENDO LETRAS POR GUIONES 
+            for(int i = 0; i<letras.length;i++){
+                guiones[i]='-';
+                System.out.print(" " +guiones[i]+" ");
+            }
+            System.out.println("");
+            //System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
+            //letra=teclado.next().toUpperCase().charAt(0);
+            //System.out.println("LA LETRA QUE HAS ESCOGIDO ES "+ letra);
+            int errores=0;
+            
+            while(!Arrays.equals(guiones,letras) && (errores<6)){
+                pintarMonigote(errores);
+                System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
+                letra=teclado.next().toUpperCase().charAt(0);
+                boolean acierto=false;
+                for(int i = 0; i<letras.length;i++){
+                    if (letras[i]==letra){
+                        guiones[i]=letra;
+                        System.out.print(" " +guiones[i]+" ");
+                        acierto=true;
+                    }else{
+                        System.out.print(" " +guiones[i]+" ");
+                    }
+                }
+                System.out.println("");
+                if(acierto==false){
+                    System.out.println("VAYA NO HAS ACERTADO NINGUNA LETRA");
+                    errores++;
+                }else
+                    System.out.println("MUY BIEN! HAS ADIVINADO LA "+ letra);
+                System.out.println("");
+                //pintarMonigote(errores);
+            }
+            if(Arrays.equals(guiones,letras)){
+            System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
+            }
             /*-------------------------------------------------------------------
             *    METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA PARTIDA
             --------------------------------------------------------------------*/
+            System.out.println("");
             System.out.println("¿DESEA JUGAR OTRA PARTIDA?");
             juego =teclado.next().toUpperCase();
             jugar=otraPartida(juego);//METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA VEZ
