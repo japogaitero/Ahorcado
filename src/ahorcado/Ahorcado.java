@@ -245,8 +245,7 @@ public class Ahorcado {
         return jugar;
     }    
     public static void main(String[] args)throws FileNotFoundException {
-        Scanner teclado = new Scanner(System.in);
-        //Scanner entrada = new Scanner ("src/ahorcado/facil.txt");
+        Scanner teclado = new Scanner(System.in);        
         String nivel;
         String juego;
         String palabra;
