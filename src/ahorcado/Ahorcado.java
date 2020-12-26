@@ -40,7 +40,7 @@ public class Ahorcado {
                     nivelCorrecto=false;
                     break;
                 default:
-                    System.out.println("LIMITESE A ESCRIBIR \"FACIL\" O \"MEDIO\" O \"DIFICIL\" O \"INSTRUCCIONES\"" );
+                    System.out.println("PERO QUE RESPUESTA ES ESTA??!! ESCRIBE SOLO \"FACIL\" O \"MEDIO\" O \"DIFICIL\" O \"INSTRUCCIONES\"" );
                     nivel =teclado.next().toUpperCase();
             }
         }
@@ -203,7 +203,7 @@ public class Ahorcado {
                         "  ____||____");
                 break;
                 
-            default:
+            case 6:
                 System.out.println("      ______________________________        \n" +
                         "      ||                            |                  \n" +
                         "      ||                            |                  \n" +
@@ -276,8 +276,11 @@ public class Ahorcado {
             //System.out.println("LA LETRA QUE HAS ESCOGIDO ES "+ letra);
             int errores=0;
             
-            while(!Arrays.equals(guiones,letras) && (errores<6)){
+            while(!Arrays.equals(guiones,letras) && (errores<=6)){
                 pintarMonigote(errores);
+                if (errores==6){
+                    break;
+                }
                 System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
                 letra=teclado.next().toUpperCase().charAt(0);
                 boolean acierto=false;
@@ -288,9 +291,13 @@ public class Ahorcado {
                         acierto=true;
                     }else{
                         System.out.print(" " +guiones[i]+" ");
-                    }
+                    }                    
                 }
                 System.out.println("");
+                if(Arrays.equals(guiones,letras)){                    
+                    System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
+                    break;
+                }                
                 if(acierto==false){
                     System.out.println("VAYA NO HAS ACERTADO NINGUNA LETRA");
                     errores++;
@@ -299,14 +306,14 @@ public class Ahorcado {
                 System.out.println("");
                 //pintarMonigote(errores);
             }
-            if(Arrays.equals(guiones,letras)){
-            System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
-            }
+            //if(Arrays.equals(guiones,letras)){
+            //System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
+            
             /*-------------------------------------------------------------------
             *    METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA PARTIDA
             --------------------------------------------------------------------*/
             System.out.println("");
-            System.out.println("¿DESEA JUGAR OTRA PARTIDA?");
+            System.out.println("¿DESEAs JUGAR OTRA PARTIDA?");
             juego =teclado.next().toUpperCase();
             jugar=otraPartida(juego);//METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA VEZ
         }
