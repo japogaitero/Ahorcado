@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class Ahorcado {
     
     public static String selectorNivel(){
-        String nivel;        
+        String nivel;
         Scanner teclado = new Scanner(System.in);
         nivel =teclado.next().toUpperCase();
         boolean nivelCorrecto=true;
@@ -72,7 +72,7 @@ public class Ahorcado {
                 palabras=entradaDificil.nextLine().toUpperCase();
                 entradaDificil.close();
                 break;
-            case "INSTRUCCIONES":                
+            case "INSTRUCCIONES":
                 Instrucciones=entradaInstrucciones.nextLine().toUpperCase();
                 entradaInstrucciones.close();
                 break;
@@ -90,48 +90,48 @@ public class Ahorcado {
         Scanner teclado = new Scanner(System.in);
         char letra;
         char [] letras=palabra.toCharArray();// CONVIERTO LA PALABRA EN UN ARRAY DE LETRAS (char)
-            char [] guiones= new char[letras.length];// CREO UN ARRAY DE MISMA LONGITUD QUE LAS LETRAS PERO SUSTITUYENDO LETRAS POR GUIONES 
+        char [] guiones= new char[letras.length];// CREO UN ARRAY DE MISMA LONGITUD QUE LAS LETRAS PERO SUSTITUYENDO LETRAS POR GUIONES
+        for(int i = 0; i<letras.length;i++){
+            guiones[i]='-';
+            System.out.print(" " +guiones[i]+" ");
+        }
+        System.out.println("");
+        //System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
+        //letra=teclado.next().toUpperCase().charAt(0);
+        //System.out.println("LA LETRA QUE HAS ESCOGIDO ES "+ letra);
+        int errores=0;
+        
+        while(!Arrays.equals(guiones,letras) && (errores<=6)){
+            pintarMonigote(errores);
+            if (errores==6){
+                break;
+            }
+            System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
+            letra=teclado.next().toUpperCase().charAt(0);
+            boolean acierto=false;
             for(int i = 0; i<letras.length;i++){
-                guiones[i]='-';
-                System.out.print(" " +guiones[i]+" ");
+                if (letras[i]==letra){
+                    guiones[i]=letra;
+                    System.out.print(" " +guiones[i]+" ");
+                    acierto=true;
+                }else{
+                    System.out.print(" " +guiones[i]+" ");
+                }
             }
             System.out.println("");
-            //System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
-            //letra=teclado.next().toUpperCase().charAt(0);
-            //System.out.println("LA LETRA QUE HAS ESCOGIDO ES "+ letra);
-            int errores=0;
-            
-            while(!Arrays.equals(guiones,letras) && (errores<=6)){
-                pintarMonigote(errores);
-                if (errores==6){
-                    break;
-                }
-                System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
-                letra=teclado.next().toUpperCase().charAt(0);
-                boolean acierto=false;
-                for(int i = 0; i<letras.length;i++){
-                    if (letras[i]==letra){
-                        guiones[i]=letra;
-                        System.out.print(" " +guiones[i]+" ");
-                        acierto=true;
-                    }else{
-                        System.out.print(" " +guiones[i]+" ");
-                    }                    
-                }
-                System.out.println("");
-                if(Arrays.equals(guiones,letras)){                    
-                    System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
-                    break;
-                }                
-                if(acierto==false){
-                    System.out.println("VAYA NO HAS ACERTADO NINGUNA LETRA");
-                    errores++;
-                }else
-                    System.out.println("MUY BIEN! HAS ADIVINADO LA "+ letra);
-                System.out.println("");
+            if(Arrays.equals(guiones,letras)){
+                System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
+                break;
+            }
+            if(acierto==false){
+                System.out.println("VAYA NO HAS ACERTADO NINGUNA LETRA");
+                errores++;
+            }else
+                System.out.println("MUY BIEN! HAS ADIVINADO LA "+ letra);
+            System.out.println("");
+        }
     }
-    }
-    public static void pintarMonigote(int errores){        
+    public static void pintarMonigote(int errores){
         switch (errores){
             case 0:
                 System.out.println("      ______________________________        \n" +
@@ -289,20 +289,20 @@ public class Ahorcado {
             }
         }
         return jugar;
-    }    
+    }
     public static void main(String[] args)throws FileNotFoundException {
-        Scanner teclado = new Scanner(System.in);        
+        Scanner teclado = new Scanner(System.in);
         String nivel;
         String juego;
-        String palabra;        
+        String palabra;
         boolean jugar=true;
         while (jugar){  //ESTE LOOP SE REPETIRA MIENTRAS EL JUGADOR RESPONDA SI A JUGAR OTRA PARTIDA
             System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR O ESCRIBA INSTRUCCIONES PARA SABER COMO JUGAR");
-            System.out.println("FACIL - - - MEDIO - - - DIFICIL - - - INTRUCCIONES");            
+            System.out.println("FACIL - - - MEDIO - - - DIFICIL - - - INTRUCCIONES");
             nivel=selectorNivel();//METODO PARA SELECCIONAR NIVEL
             palabra=selectorPalabra(nivel);//METODO PARA SELECCIONAR PALABRA SEGUN EL NIVEL
-            System.out.println("la palabra para jugar es "+ palabra);
-            jugarConPalabras(palabra); //METODO PARA IR PROBANDO LETRAS Y PINTAR EL MOÑECO 
+            //System.out.println("la palabra para jugar es "+ palabra);
+            jugarConPalabras(palabra); //METODO PARA IR PROBANDO LETRAS Y PINTAR EL MOÑECO
             System.out.println("");
             System.out.println("¿DESEAs JUGAR OTRA PARTIDA?");
             juego =teclado.next().toUpperCase();
