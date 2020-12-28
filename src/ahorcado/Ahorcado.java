@@ -296,7 +296,7 @@ public class Ahorcado {
         String nuevoJuego;
         String palabra;
         boolean ganadas=true;
-        int facilWin=0, facilLoosed=0, medioWin=0, medioLoosed=0, dificilWin=0, dificilLoosed=0; //CONTADORES PARA EL RESUMEN DE LA PARTIDA
+        int facilWin=0, facilLoosed=0, medioWin=0, medioLoosed=0, dificilWin=0, dificilLoosed=0; //CONTADORES  PARA EL RESUMEN DE LA PARTIDA
         boolean jugar=true;
         while (jugar){  //ESTE LOOP SE REPETIRA MIENTRAS EL JUGADOR RESPONDA SI A JUGAR OTRA PARTIDA
             System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR O ESCRIBA INSTRUCCIONES PARA SABER COMO JUGAR");
