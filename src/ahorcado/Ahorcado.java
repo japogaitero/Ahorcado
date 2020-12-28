@@ -80,30 +80,29 @@ public class Ahorcado {
         String[] arrayPalabras =palabras.split(",");
         for (int i=0; i<arrayPalabras.length;i++){
             palabra= arrayPalabras[i];
-            //System.out.println(palabra);
         }
         palabra= arrayPalabras[aleatorio.nextInt(arrayPalabras.length)];
         
         return palabra;
     }
-    public static void jugarConPalabras(String palabra){
+    public static boolean jugarConPalabras(String palabra){
         Scanner teclado = new Scanner(System.in);
+        boolean ganadas=true;
         char letra;
-        char [] letras=palabra.toCharArray();// CONVIERTO LA PALABRA EN UN ARRAY DE LETRAS (char)
-        char [] guiones= new char[letras.length];// CREO UN ARRAY DE MISMA LONGITUD QUE LAS LETRAS PERO SUSTITUYENDO LETRAS POR GUIONES
+        char [] letras=palabra.toCharArray();// CONVIERTE LA PALABRA EN UN ARRAY DE LETRAS (char)
+        char [] guiones= new char[letras.length];// CREA UN ARRAY DE MISMA LONGITUD QUE LAS LETRAS PERO SUSTITUYENDO LETRAS POR GUIONES
         for(int i = 0; i<letras.length;i++){
             guiones[i]='-';
             System.out.print(" " +guiones[i]+" ");
         }
         System.out.println("");
-        //System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
-        //letra=teclado.next().toUpperCase().charAt(0);
-        //System.out.println("LA LETRA QUE HAS ESCOGIDO ES "+ letra);
-        int errores=0;
-        
+        int errores=0;        
         while(!Arrays.equals(guiones,letras) && (errores<=6)){
             pintarMonigote(errores);
             if (errores==6){
+                System.out.println("VAYA! HAS MATADO AL FIGURIN ESTE Y NO HAS ADIVINADO LA PALABRA!!");
+                System.out.println("LA PALABRA ERA " + palabra);
+                ganadas=false;
                 break;
             }
             System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
@@ -121,6 +120,7 @@ public class Ahorcado {
             System.out.println("");
             if(Arrays.equals(guiones,letras)){
                 System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
+                ganadas=true;
                 break;
             }
             if(acierto==false){
@@ -130,6 +130,7 @@ public class Ahorcado {
                 System.out.println("MUY BIEN! HAS ADIVINADO LA "+ letra);
             System.out.println("");
         }
+        return ganadas;
     }
     public static void pintarMonigote(int errores){
         switch (errores){
@@ -265,8 +266,7 @@ public class Ahorcado {
                         "      ||                         ||    ||              \n" +
                         "      ||                        ||      ||             \n" +
                         "      ||                       ---      ---            \n" +
-                        "  ____||____");
-                System.out.println("VAYA! HAS MATADO AL FIGURIN ESTE Y NO HAS ADIVINADO LA PALABRA!!");
+                        "  ____||____");                
         }
     }
     public static boolean otraPartida(String juego){
@@ -293,21 +293,41 @@ public class Ahorcado {
     public static void main(String[] args)throws FileNotFoundException {
         Scanner teclado = new Scanner(System.in);
         String nivel;
-        String juego;
+        String nuevoJuego;
         String palabra;
+        boolean ganadas=true;
+        int facilWin=0, facilLoosed=0, medioWin=0, medioLoosed=0, dificilWin=0, dificilLoosed=0; //CONTADORES PARA EL RESUMEN DE LA PARTIDA
         boolean jugar=true;
         while (jugar){  //ESTE LOOP SE REPETIRA MIENTRAS EL JUGADOR RESPONDA SI A JUGAR OTRA PARTIDA
             System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR O ESCRIBA INSTRUCCIONES PARA SABER COMO JUGAR");
             System.out.println("FACIL - - - MEDIO - - - DIFICIL - - - INTRUCCIONES");
             nivel=selectorNivel();//METODO PARA SELECCIONAR NIVEL
             palabra=selectorPalabra(nivel);//METODO PARA SELECCIONAR PALABRA SEGUN EL NIVEL
-            //System.out.println("la palabra para jugar es "+ palabra);
-            jugarConPalabras(palabra); //METODO PARA IR PROBANDO LETRAS Y PINTAR EL MOÑECO
+            //System.out.println("la palabra para jugar es "+ palabra);   --------------------> HABILITANDO ESTA LINEA SE PUEDE VER LA PALABRA PARA AVERIGUAR PARA DEBUGUEAR EL JUEGO
+            ganadas=jugarConPalabras(palabra); //METODO PARA IR PROBANDO LETRAS Y PINTAR EL MOÑECO
             System.out.println("");
             System.out.println("¿DESEAs JUGAR OTRA PARTIDA?");
-            juego =teclado.next().toUpperCase();
-            jugar=otraPartida(juego);//METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA PARTIDA
+            nuevoJuego =teclado.next().toUpperCase();
+            jugar=otraPartida(nuevoJuego);//METODO PARA PREGUNTAR SI SE QUIERE JUGAR OTRA PARTIDA
+            if (ganadas&&(nivel.equals("FACIL"))){
+                facilWin++;
+            }else if(!ganadas&&(nivel.equals("FACIL"))){
+                facilLoosed++;
+            }else if(ganadas&&(nivel.equals("MEDIO"))){
+                medioWin++;
+            }else if(!ganadas&&(nivel.equals("MEDIO"))){
+                medioLoosed++;
+            }else if(ganadas&&(nivel.equals("DIFICIL"))){
+                dificilWin++;
+            }else if(!ganadas&&(nivel.equals("DIFICIL"))){
+                dificilLoosed++;
+            }
+            
         }
         System.out.println("SI YA NO QUIERES JUGAR MAS PUES S'ACABO LO QUE SE DABA");
+        System.out.println(" RESUMEN DE LA PARTIDA                                                  \n"+
+                        "      -NIVEL FÁCIL: "+facilWin+" Ganadas, "+facilLoosed+" Perdidas         \n" +
+                        "      -NIVEL MEDIO: "+medioWin+" Ganadas, "+medioLoosed+" Perdidas         \n" +
+                        "      -NIVEL DIFICIL: "+dificilWin+" Ganadas, "+dificilLoosed+" Perdidas   \n");
     }
 }
