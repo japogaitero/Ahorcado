@@ -56,33 +56,44 @@ public class Ahorcado {
         Scanner entradaDificil = new Scanner (archivoDificil);
         Scanner entradaInstrucciones = new Scanner (archivoInstrucciones);
         Random aleatorio = new Random();
-        String palabras="";
-        String palabra;
+        String [] arrayPalabras = new String [50];
+        String palabra="";
         String Instrucciones;
         switch (nivel){
             case "FACIL":
-                palabras=entradaFacil.nextLine().toUpperCase();
+                for (int i=0;i<arrayPalabras.length;i++){
+                    palabra=entradaFacil.next().toUpperCase();
+                    arrayPalabras[i]=palabra;
+                }
                 entradaFacil.close();
                 break;
             case "MEDIO":
-                palabras=entradaMedio.nextLine().toUpperCase();
+                for (int i=0;i<arrayPalabras.length;i++){
+                    palabra=entradaMedio.next().toUpperCase();
+                    arrayPalabras[i]=palabra;
+                }
                 entradaMedio.close();
                 break;
             case "DIFICIL":
-                palabras=entradaDificil.nextLine().toUpperCase();
+                for (int i=0;i<arrayPalabras.length;i++){
+                    palabra=entradaDificil.next().toUpperCase();
+                    arrayPalabras[i]=palabra;
+                }
                 entradaDificil.close();
                 break;
             case "INSTRUCCIONES":
-                Instrucciones=entradaInstrucciones.nextLine().toUpperCase();
+                while(entradaInstrucciones.hasNextLine()){
+                    Instrucciones=entradaInstrucciones.nextLine();
+                    System.out.println(Instrucciones);
+                    palabra="instrucciones";
+                }
+                System.out.println("");
                 entradaInstrucciones.close();
                 break;
         }
-        String[] arrayPalabras =palabras.split(",");
-        for (int i=0; i<arrayPalabras.length;i++){
-            palabra= arrayPalabras[i];
+        if(!palabra.equals("instrucciones")){
+            palabra=arrayPalabras[aleatorio.nextInt(arrayPalabras.length)];
         }
-        palabra= arrayPalabras[aleatorio.nextInt(arrayPalabras.length)];
-        
         return palabra;
     }
     public static boolean jugarConPalabras(String palabra){
@@ -96,8 +107,8 @@ public class Ahorcado {
             System.out.print(" " +guiones[i]+" ");
         }
         System.out.println("");
-        int errores=0;        
-        while(!Arrays.equals(guiones,letras) && (errores<=6)){
+        int errores=0;
+        while((errores<=6)){
             pintarMonigote(errores);
             if (errores==6){
                 System.out.println("VAYA! HAS MATADO AL FIGURIN ESTE Y NO HAS ADIVINADO LA PALABRA!!");
@@ -266,7 +277,7 @@ public class Ahorcado {
                         "      ||                         ||    ||              \n" +
                         "      ||                        ||      ||             \n" +
                         "      ||                       ---      ---            \n" +
-                        "  ____||____");                
+                        "  ____||____");
         }
     }
     public static boolean otraPartida(String juego){
@@ -296,14 +307,17 @@ public class Ahorcado {
         String nuevoJuego;
         String palabra;
         boolean ganadas=true;
-        int facilWin=0, facilLoosed=0, medioWin=0, medioLoosed=0, dificilWin=0, dificilLoosed=0; //CONTADORES  PARA EL RESUMEN DE LA PARTIDA
+        int facilWin=0, facilLoose=0, medioWin=0, medioLoose=0, dificilWin=0, dificilLoose=0; //CONTADORES  PARA EL RESUMEN DE LA PARTIDA
         boolean jugar=true;
         while (jugar){  //ESTE LOOP SE REPETIRA MIENTRAS EL JUGADOR RESPONDA SI A JUGAR OTRA PARTIDA
             System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR O ESCRIBA INSTRUCCIONES PARA SABER COMO JUGAR");
             System.out.println("FACIL - - - MEDIO - - - DIFICIL - - - INTRUCCIONES");
             nivel=selectorNivel();//METODO PARA SELECCIONAR NIVEL
             palabra=selectorPalabra(nivel);//METODO PARA SELECCIONAR PALABRA SEGUN EL NIVEL
-            //System.out.println("la palabra para jugar es "+ palabra);   --------------------> HABILITANDO ESTA LINEA SE PUEDE VER LA PALABRA PARA AVERIGUAR PARA DEBUGUEAR EL JUEGO
+            if (palabra.equals("instrucciones")){
+                continue;
+            }
+            System.out.println("la palabra para jugar es "+ palabra);//   --------------------> HABILITANDO ESTA LINEA SE PUEDE VER LA PALABRA PARA AVERIGUAR PARA DEBUGUEAR EL JUEGO
             ganadas=jugarConPalabras(palabra); //METODO PARA IR PROBANDO LETRAS Y PINTAR EL MOÑECO
             System.out.println("");
             System.out.println("¿DESEAs JUGAR OTRA PARTIDA?");
@@ -312,22 +326,22 @@ public class Ahorcado {
             if (ganadas&&(nivel.equals("FACIL"))){
                 facilWin++;
             }else if(!ganadas&&(nivel.equals("FACIL"))){
-                facilLoosed++;
+                facilLoose++;
             }else if(ganadas&&(nivel.equals("MEDIO"))){
                 medioWin++;
             }else if(!ganadas&&(nivel.equals("MEDIO"))){
-                medioLoosed++;
+                medioLoose++;
             }else if(ganadas&&(nivel.equals("DIFICIL"))){
                 dificilWin++;
             }else if(!ganadas&&(nivel.equals("DIFICIL"))){
-                dificilLoosed++;
+                dificilLoose++;
             }
             
         }
         System.out.println("SI YA NO QUIERES JUGAR MAS PUES S'ACABO LO QUE SE DABA");
         System.out.println(" RESUMEN DE LA PARTIDA                                                  \n"+
-                        "      -NIVEL FÁCIL: "+facilWin+" Ganadas, "+facilLoosed+" Perdidas         \n" +
-                        "      -NIVEL MEDIO: "+medioWin+" Ganadas, "+medioLoosed+" Perdidas         \n" +
-                        "      -NIVEL DIFICIL: "+dificilWin+" Ganadas, "+dificilLoosed+" Perdidas   \n");
+                "      -NIVEL FÁCIL: "+facilWin+" Ganadas, "+facilLoose+" Perdidas         \n" +
+                        "      -NIVEL MEDIO: "+medioWin+" Ganadas, "+medioLoose+" Perdidas         \n" +
+                                "      -NIVEL DIFICIL: "+dificilWin+" Ganadas, "+dificilLoose+" Perdidas   \n");
     }
 }
