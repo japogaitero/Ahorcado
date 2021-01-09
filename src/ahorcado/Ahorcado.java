@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  *
@@ -47,6 +48,7 @@ public class Ahorcado {
         return nivel;
     }
     public static String selectorPalabra(String nivel)throws FileNotFoundException {
+        /*SEGUN EL NIVEL SELECCIONADO O LAS INSTRUCCIONES EN EL METODO ANTERIOR ESTE METODO LEE DE FICHERO Y DEVUELVE LO CORRESPONDIENTE*/
         File archivoFacil = new File ("src/ahorcado/facil.txt");
         File archivoMedio = new File ("src/ahorcado/medio.txt");
         File archivoDificil = new File ("src/ahorcado/dificil.txt");
@@ -56,10 +58,10 @@ public class Ahorcado {
         Scanner entradaDificil = new Scanner (archivoDificil);
         Scanner entradaInstrucciones = new Scanner (archivoInstrucciones);
         Random aleatorio = new Random();
-        String [] arrayPalabras = new String [50];
+        String [] arrayPalabras = new String [50]; // ARRAY DE 50 POSICIONES PARA LEER EL ARCHIVO DE 50 PALABRAS
         String palabra="";
         String Instrucciones;
-        switch (nivel){
+        switch (nivel){// EN CADA CASO SE RELLENA UN ARRAY CON LAS PALABRAS DE CADA NIVEL (MAS ABAJO SE SELECCIONA UNA AL AZAR)
             case "FACIL":
                 for (int i=0;i<arrayPalabras.length;i++){
                     palabra=entradaFacil.next().toUpperCase();
@@ -91,7 +93,7 @@ public class Ahorcado {
                 entradaInstrucciones.close();
                 break;
         }
-        if(!palabra.equals("instrucciones")){
+        if(!palabra.equals("instrucciones")){//SE SELECCIONA UNA PALABRA AL AZAR DEL ARRAY DE PALABRAS
             palabra=arrayPalabras[aleatorio.nextInt(arrayPalabras.length)];
         }
         return palabra;
@@ -99,47 +101,65 @@ public class Ahorcado {
     public static boolean jugarConPalabras(String palabra){
         Scanner teclado = new Scanner(System.in);
         boolean ganadas=true;
+        int intento=1;
         char letra;
-        char [] letras=palabra.toCharArray();// CONVIERTE LA PALABRA EN UN ARRAY DE LETRAS (char)
+        char [] letras=palabra.toCharArray();// CONVIERTE LA PALABRA(STRING) EN UN ARRAY DE LETRAS (CARACTERES) (char)
+        int p = 0; //CONTADOR PARA EL ARRAY LIST DE LAS LETRAS YA EINTRODIDAS
         char [] guiones= new char[letras.length];// CREA UN ARRAY DE MISMA LONGITUD QUE LAS LETRAS PERO SUSTITUYENDO LETRAS POR GUIONES
-        for(int i = 0; i<letras.length;i++){
-            guiones[i]='-';
-            System.out.print(" " +guiones[i]+" ");
-        }
-        System.out.println("");
         int errores=0;
+        ArrayList<Character> letrasIntroducidas = new ArrayList<Character>();//ESTE ARRAY DINAMICO PERMITE ACUMULAR LAS LETRAS YA PROBADAS Y MOSTRARLAS
+        for(int i = 0; i<letras.length;i++){// ESTE BUCLE RELLENA UN ARRAY CON O GUIONES EQUIVALENTES A LA PALABRA A ADIVINAR, MAS ABAJO SE PINTAN
+            guiones[i]='-';
+        }
         while((errores<=6)){
-            pintarMonigote(errores);
-            if (errores==6){
-                System.out.println("VAYA! HAS MATADO AL FIGURIN ESTE Y NO HAS ADIVINADO LA PALABRA!!");
+            pintarMonigote(errores); //SE PINTA AL MOÑECO SEGUN EL CASO DE ERRORES
+            if (errores==6){// ESTA CONDICION ESTA AL PRINCIPIO PARA EN CASO DE LLEGAR A 6 ERRORES NO CONTINUAR CON LA EJECUCION DEL RESTO DEL CICLO
+                System.out.println("VAYA! HAS MATADO AL MOÑECO Y NO HAS ADIVINADO LA PALABRA!!");
                 System.out.println("LA PALABRA ERA " + palabra);
                 ganadas=false;
                 break;
             }
-            System.out.println("A VER DIME LA LETRA QUE QUIERES PROBAR");
-            letra=teclado.next().toUpperCase().charAt(0);
-            boolean acierto=false;
-            for(int i = 0; i<letras.length;i++){
-                if (letras[i]==letra){
-                    guiones[i]=letra;
-                    System.out.print(" " +guiones[i]+" ");
-                    acierto=true;
-                }else{
-                    System.out.print(" " +guiones[i]+" ");
-                }
+            if (intento!=6){
+                System.out.print("ESTE TU INTENTO Nº "+ intento + ": ");
+            }else{
+                System.out.print("¡¡¡CUIDADO!!! ESTE ES TU SEXTO Y ULTIMO INTENTO DE SALVAR AL MOÑECO:  ");
+            }
+            for(int i = 0; i<letras.length;i++){//PINTADO DE LOS GUIONES PARA SABER CUANTAS LETRAS TIENE LA PALABRA
+                System.out.print(" " +guiones[i]+" ");
             }
             System.out.println("");
-            if(Arrays.equals(guiones,letras)){
+            System.out.println("A VER DIME UNA LETRA QUE QUIERAS PROBAR");
+            letra=teclado.next().toUpperCase().charAt(0);
+            if (letrasIntroducidas.contains(letra)){//CON ESTA CONDICION SE DA UNA AYUDA EN CASO DE INTRODUCIR UNA LETRA YA INTRODUCIDA
+                System.out.println("YA HAS INTRODUCIDO LA LETRA " +  letra);
+                System.out.print("PARA QUE LO TENGAS EN CUENTA YA HAS INTRODUCIDO LAS  SIGUIENTES LETRAS: ");
+                for (int i = 0; i < letrasIntroducidas.size(); i++) {
+                    System.out.print(letrasIntroducidas.get(i) + " ");
+                }
+                System.out.println("");
+                continue;//SE PASA A LA SIGUIENTE ITERACION DEL BUCLE SIN CONTAR COMO ERROR ESTE INTENTO
+            }
+            letrasIntroducidas.add(p,letra);//SI LA LETRA NO ESTABA EN EL ARRAY LIST DE LETRAS INTRODUCIDAS SE INTRODUCE
+            boolean acierto=false;//ESTA VARIABLE
+            for(int i = 0; i<letras.length;i++){//ESTE BUCLE COMPARA SI LA LETRA INTRODUCIDA SE ENCUENTRA EN ALGUNA POSICION DEL ARRAY QUE FORMA LA PALABRA
+                if (letras[i]==letra){
+                    guiones[i]=letra;//SI LA LETRA INTRODUCIDA ES BUENA SE SUSTITUYE EL GUION POR ESTA Y SE CONSIDERA LETRA ACERTADA
+                    acierto=true;
+                }
+            }
+            if(Arrays.equals(guiones,letras)){//SI EL ARRAY DE LA PALABRA Y EL DE GUIONES SUSTITUIDOS CON  LETRAS CORRECTAS SON IDENTICOS LA PALABRA HABRA SIDO DESCUBIERTA
                 System.out.println("¡¡¡¡ BIEN !!! HAS ACERTADO LA PALABRA");
                 ganadas=true;
                 break;
             }
             if(acierto==false){
-                System.out.println("VAYA NO HAS ACERTADO NINGUNA LETRA");
+                System.out.println("VAYA, LA LETRA " + letra + " PARECE QUE NO ESTA");
                 errores++;
+                intento++;
             }else
                 System.out.println("MUY BIEN! HAS ADIVINADO LA "+ letra);
             System.out.println("");
+            p++;//AUMENTO EL CONTADOR PARA LA POSICION DEL ARRAY LIST letrasIntroducidas
         }
         return ganadas;
     }
@@ -265,8 +285,8 @@ public class Ahorcado {
                         "      ||                            |                  \n" +
                         "      ||                            |                  \n" +
                         "      ||                           _|_                 \n" +
-                        "      ||                         _(___)_               \n" +
-                        "      ||      MUERTO!!!          | - + |               \n" +
+                        "      ||         HAS MATADO      _(___)_               \n" +
+                        "      ||       A CRISPIN !!!     | - + |               \n" +
                         "      ||                         |  <  |               \n" +
                         "      ||                          \\_O_/               \n" +
                         "      ||                            ||                 \n" +
@@ -309,15 +329,15 @@ public class Ahorcado {
         boolean ganadas=true;
         int facilWin=0, facilLoose=0, medioWin=0, medioLoose=0, dificilWin=0, dificilLoose=0; //CONTADORES  PARA EL RESUMEN DE LA PARTIDA
         boolean jugar=true;
-        while (jugar){  //ESTE LOOP SE REPETIRA MIENTRAS EL JUGADOR RESPONDA SI A JUGAR OTRA PARTIDA
+        while (jugar){  //ESTE LOOP SE REPETIRA MIENTRAS EL JUGADOR DECIDA JUGAR OTRA PARTIDA, SI DICE QUE NO, SALE Y MUESTRA RESULTADO DE PARTIDAS
             System.out.println("SELECCIONE EL NIVEL QUE QUIERE JUGAR O ESCRIBA INSTRUCCIONES PARA SABER COMO JUGAR");
             System.out.println("FACIL - - - MEDIO - - - DIFICIL - - - INTRUCCIONES");
             nivel=selectorNivel();//METODO PARA SELECCIONAR NIVEL
-            palabra=selectorPalabra(nivel);//METODO PARA SELECCIONAR PALABRA SEGUN EL NIVEL
+            palabra=selectorPalabra(nivel);//METODO PARA SELECCIONAR PALABRA SEGUN EL NIVEL O MOSTRAR LAS INSTRUCCIONES
             if (palabra.equals("instrucciones")){
-                continue;
+                continue;// EN CASO DE QUE SE MUESTREN LAS INTRUCCIONES SE VUELVE A PEDIR QUE SE SELECCIONE EL NIVEL PARA JUGAR
             }
-            System.out.println("la palabra para jugar es "+ palabra);//   --------------------> HABILITANDO ESTA LINEA SE PUEDE VER LA PALABRA PARA AVERIGUAR PARA DEBUGUEAR EL JUEGO
+            //System.out.println("la palabra para jugar es "+ palabra);//   --------------------> HABILITANDO ESTA LINEA SE PUEDE VER LA PALABRA PARA AVERIGUAR PARA PROBAR EL JUEGO
             ganadas=jugarConPalabras(palabra); //METODO PARA IR PROBANDO LETRAS Y PINTAR EL MOÑECO
             System.out.println("");
             System.out.println("¿DESEAs JUGAR OTRA PARTIDA?");
@@ -338,10 +358,10 @@ public class Ahorcado {
             }
             
         }
-        System.out.println("SI YA NO QUIERES JUGAR MAS PUES S'ACABO LO QUE SE DABA");
-        System.out.println(" RESUMEN DE LA PARTIDA                                                  \n"+
-                "      -NIVEL FÁCIL: "+facilWin+" Ganadas, "+facilLoose+" Perdidas         \n" +
-                        "      -NIVEL MEDIO: "+medioWin+" Ganadas, "+medioLoose+" Perdidas         \n" +
-                                "      -NIVEL DIFICIL: "+dificilWin+" Ganadas, "+dificilLoose+" Perdidas   \n");
+        System.out.println("DEJAMOS EL JUEGO POR AHORA...");
+        System.out.println(" EL RESUMEN DE ESTA PARTIDA  HA SIDO                                 \n"+
+                "      -NIVEL FÁCIL:    "+facilWin+" Ganadas, "+facilLoose+" Perdidas            \n"+
+                "      -NIVEL MEDIO:    "+medioWin+" Ganadas, "+medioLoose+" Perdidas            \n"+
+                "      -NIVEL DIFICIL:  "+dificilWin+" Ganadas, "+dificilLoose+" Perdidas        \n");
     }
 }
